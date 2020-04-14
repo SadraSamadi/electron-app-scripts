@@ -11,7 +11,7 @@
     "config",
     "dist"
   ],
-  "bin": "dist",
+  "bin": "dist/index.js",
   "repository": "https://github.com/SadraSamadi/electron-scripts",
   "scripts": {
     "clean": "rimraf ./dist",
