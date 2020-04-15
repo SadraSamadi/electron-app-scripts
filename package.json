@@ -3,7 +3,9 @@
   "version": "1.0.0-beta.1",
   "description": "Configuration and scripts for Electron App.",
   "keywords": [
-    "electron"
+    "electron",
+    "elctron-app",
+    "scripts"
   ],
   "license": "MIT",
   "author": "Sadra Samadi <sadra.smd@gmail.com> (https://sadrasamadi.github.io/)",
@@ -12,14 +14,20 @@
     "dist"
   ],
   "bin": "dist/index.js",
-  "repository": "https://github.com/SadraSamadi/electron-scripts",
+  "repository": "https://github.com/SadraSamadi/electron-app-scripts",
   "scripts": {
     "clean": "rimraf ./dist",
     "build": "tsc --rootDir src --outDir dist",
-    "prepublishOnly": "npm run clean && npm run build",
+    "clean:build": "npm run clean && npm run build",
+    "prepublishOnly": "npm run clean:build",
     "release": "np"
   },
   "dependencies": {
+    "@babel/core": "^7.9.0",
+    "@babel/plugin-transform-runtime": "^7.9.0",
+    "@babel/preset-env": "^7.9.5",
+    "@babel/preset-react": "^7.9.4",
+    "babel-loader": "^8.1.0",
     "cross-spawn": "^7.0.2",
     "css-loader": "^3.5.2",
     "dotenv": "^8.2.0",
@@ -32,10 +40,10 @@
     "optimize-css-assets-webpack-plugin": "^5.0.3",
     "postcss-loader": "^3.0.0",
     "postcss-preset-env": "^6.7.0",
-    "style-loader": "^1.1.3",
+    "style-loader": "^1.1.4",
     "terser-webpack-plugin": "^2.3.5",
     "tree-kill": "^1.2.2",
-    "ts-loader": "^6.2.2",
+    "ts-loader": "^7.0.0",
     "tslib": "^1.11.1",
     "typescript": "^3.8.3",
     "webpack": "^4.42.1",

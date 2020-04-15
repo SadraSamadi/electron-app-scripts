@@ -1,3 +1,5 @@
-export default async function (): Promise<void> {
+import {Options} from '../model';
+
+export default async function (options: Options): Promise<void> {
   console.log('pack');
 }

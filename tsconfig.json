@@ -1,18 +1,3 @@
 {
-  "compilerOptions": {
-    "lib": [
-      "ESNext"
-    ],
-    "target": "ES5",
-    "module": "CommonJS",
-    "moduleResolution": "Node",
-    "forceConsistentCasingInFileNames": true,
-    "allowSyntheticDefaultImports": true,
-    "resolveJsonModule": true,
-    "esModuleInterop": true,
-    "isolatedModules": true,
-    "importHelpers": true,
-    "skipLibCheck": false,
-    "sourceMap": true
-  }
+  "extends": "./config/tsconfig.base.json"
 }

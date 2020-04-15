@@ -1,30 +1,35 @@
-import {clean} from './task/util';
-import serve, {Options} from './task/serve';
+import remove from './task/remove';
+import serve from './task/serve';
 import build from './task/build';
 import pack from './task/pack';
+import {Options} from './model';
 import logger from './logger';
+
+export async function clean(): Promise<void> {
+  logger.info('Starting clean');
+  logger.info('Starting remove');
+  await remove();
+  logger.info('Finished remove');
+  logger.info('Finished clean');
+}
 
 export async function dev(options: Options): Promise<void> {
   logger.info('Starting dev');
-  logger.info('Starting clean');
   await clean();
-  logger.info('Finished clean');
   logger.info('Starting serve');
   await serve(options);
   logger.info('Finished serve');
   logger.info('Waiting dev');
 }
 
-export async function prod(): Promise<void> {
+export async function prod(options: Options): Promise<void> {
   logger.info('Starting prod');
-  logger.info('Starting clean');
   await clean();
-  logger.info('Starting clean');
   logger.info('Finished build');
-  await build();
+  await build(options);
   logger.info('Starting build');
   logger.info('Finished pack');
-  await pack();
+  await pack(options);
   logger.info('Finished pack');
   logger.info('Finished prod');
 }

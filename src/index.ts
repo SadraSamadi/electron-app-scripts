@@ -2,11 +2,12 @@
 
 import 'dotenv/config';
 import yargs from 'yargs';
-import {Options} from './task/serve';
-import {dev, prod} from './api';
+import {clean, dev, prod} from './api';
+import {CONFIG} from './paths';
 
-yargs.usage('Usage: $0 command [options]')
-  .command<Options>({
+yargs.scriptName('electron-app-scripts')
+  .usage('Usage: $0 command [options]')
+  .command({
     command: 'dev',
     describe: 'Start development',
     builder: {
@@ -26,6 +27,17 @@ yargs.usage('Usage: $0 command [options]')
     command: 'prod',
     describe: 'Start production',
     handler: prod
+  })
+  .command({
+    command: 'clean',
+    describe: 'Clean up',
+    handler: clean
+  })
+  .option('config', {
+    alias: 'c',
+    type: 'string',
+    desc: 'Path to config file',
+    default: CONFIG
   })
   .demandCommand()
   .alias('v', 'version')

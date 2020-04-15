@@ -1,28 +1,26 @@
 import {Configuration, ExternalsElement, ProgressPlugin} from 'webpack';
 import TerserPlugin from 'terser-webpack-plugin';
+import {Environment, Options} from '../model';
 import {PACKAGE} from '../paths';
+import {select} from '../util';
 import fse from 'fs-extra';
 
-export default async function (dev: boolean): Promise<Configuration> {
+export default async function (env: Environment, options: Options): Promise<Configuration> {
+  let selector = select(env);
   return {
     entry: './',
-    mode: dev ? 'development' : 'production',
+    mode: selector({
+      dev: 'development',
+      prod: 'production'
+    }),
     output: {
       filename: 'index.js'
     },
-    module: {
-      rules: [
-        {
-          test: /\.tsx?$/,
-          loader: require.resolve('ts-loader')
-        }
-      ]
-    },
     resolve: {
-      extensions: ['.js', '.ts', '.tsx']
+      extensions: ['.js', '.ts']
     },
     optimization: {
-      minimize: !dev,
+      minimize: env === 'prod',
       minimizer: [
         new TerserPlugin({
           sourceMap: true
@@ -32,7 +30,10 @@ export default async function (dev: boolean): Promise<Configuration> {
     plugins: [
       new ProgressPlugin()
     ],
-    devtool: dev ? 'eval' : 'source-map',
+    devtool: selector({
+      dev: 'cheap-module-source-map',
+      prod: 'source-map'
+    }),
     externals: await externals(),
     node: false
   };
