@@ -5,31 +5,20 @@ import pack from './task/pack';
 import {Options} from './model';
 import logger from './logger';
 
-export async function clean(): Promise<void> {
-  logger.info('Starting clean');
-  logger.info('Starting remove');
-  await remove();
-  logger.info('Finished remove');
-  logger.info('Finished clean');
+export async function clean(options: Options): Promise<void> {
+  logger.info('clean');
+  await remove(options);
 }
 
 export async function dev(options: Options): Promise<void> {
-  logger.info('Starting dev');
-  await clean();
-  logger.info('Starting serve');
+  logger.info('development');
+  await clean(options);
   await serve(options);
-  logger.info('Finished serve');
-  logger.info('Waiting dev');
 }
 
 export async function prod(options: Options): Promise<void> {
-  logger.info('Starting prod');
-  await clean();
-  logger.info('Finished build');
+  logger.info('production');
+  await clean(options);
   await build(options);
-  logger.info('Starting build');
-  logger.info('Finished pack');
   await pack(options);
-  logger.info('Finished pack');
-  logger.info('Finished prod');
 }

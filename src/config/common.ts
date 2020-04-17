@@ -1,17 +1,17 @@
-import {Configuration, ExternalsElement, ProgressPlugin} from 'webpack';
+import {Configuration, ProgressPlugin} from 'webpack';
 import TerserPlugin from 'terser-webpack-plugin';
-import {Environment, Options} from '../model';
-import {PACKAGE} from '../paths';
+import {Options} from '../model';
 import {select} from '../util';
 import fse from 'fs-extra';
+import path from 'path';
 
-export default async function (env: Environment, options: Options): Promise<Configuration> {
-  let selector = select(env);
+export default async function (options: Options): Promise<Configuration> {
+  let selector = select(options.env);
   return {
     entry: './',
     mode: selector({
       dev: 'development',
-      prod: 'production'
+      prod: 'none'
     }),
     output: {
       filename: 'index.js'
@@ -20,7 +20,7 @@ export default async function (env: Environment, options: Options): Promise<Conf
       extensions: ['.js', '.ts']
     },
     optimization: {
-      minimize: env === 'prod',
+      minimize: options.env === 'prod',
       minimizer: [
         new TerserPlugin({
           sourceMap: true
@@ -31,24 +31,23 @@ export default async function (env: Environment, options: Options): Promise<Conf
       new ProgressPlugin()
     ],
     devtool: selector({
-      dev: 'cheap-module-source-map',
+      dev: 'eval',
       prod: 'source-map'
     }),
-    externals: await externals(),
+    externals: await (async () => {
+      let file = path.resolve('package.json');
+      let pkg = await fse.readJSON(file);
+      if (!pkg.externals)
+        return;
+      let exts = pkg.externals.map(dep => new RegExp(`^${dep}(\/.+)?$`));
+      return (context, request, callback) => {
+        let some = exts.some(ext => ext.test(request));
+        if (some)
+          callback(null, 'commonjs ' + request);
+        else
+          callback(undefined, undefined);
+      };
+    })(),
     node: false
-  };
-}
-
-async function externals(): Promise<ExternalsElement> {
-  let pkg = await fse.readJSON(PACKAGE);
-  if (!pkg.externals)
-    return;
-  let exts = pkg.externals.map(dep => new RegExp(`^${dep}(\/.+)?$`));
-  return (context, request, callback) => {
-    let some = exts.some(ext => ext.test(request));
-    if (some)
-      callback(null, 'commonjs ' + request);
-    else
-      callback(undefined, undefined);
   };
 }

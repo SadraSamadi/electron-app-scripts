@@ -1,41 +1,47 @@
 import {RuleSetRule} from 'webpack';
 import MiniCssExtractPlugin from 'mini-css-extract-plugin';
-import {load, resolve, select} from '../util';
-import {Environment} from '../model';
+import {extend, select} from '../util';
+import {Options} from '../model';
+import async from 'async';
+import _ from 'lodash';
 
-export default async function (env: Environment): Promise<RuleSetRule[]> {
-  let plugins = [
-    await add('tailwindcss'),
-    await add('postcss-preset-env')
-  ];
+export default async function (options: Options): Promise<RuleSetRule[]> {
   return [
     {
       test: /\.css$/,
       use: [
-        select(env)({
-          dev: resolve('style-loader'),
+        select(options.env)({
+          dev: 'style-loader',
           prod: MiniCssExtractPlugin.loader
         }),
         {
-          loader: resolve('css-loader'),
+          loader: 'css-loader',
           options: {
             importLoaders: 1,
             sourceMap: true
           }
         },
         {
-          loader: resolve('postcss-loader'),
-          options: {
-            plugins: plugins.filter(Boolean),
+          loader: 'postcss-loader',
+          options: await extend(options.config.postcss, 'renderer', {
+            plugins: await (async () => {
+              let plugins = await async.map<[string, any?], any[]>([
+                ['tailwindcss', await extend(options.config.tailwind, 'renderer', {}, options)],
+                ['postcss-preset-env']
+              ], async ([id, opts]) => {
+                try {
+                  let plugin = await import(id);
+                  return plugin.default(opts);
+                } catch (e) {
+                  return null;
+                }
+              });
+              return _.filter(plugins);
+            })(),
             sourceMap: true
-          }
+          }, options)
         }
       ]
     }
   ];
-}
-
-async function add(id: string, options?: any): Promise<any> {
-  let plugin = await load(id);
-  return plugin && plugin.default(options);
 }

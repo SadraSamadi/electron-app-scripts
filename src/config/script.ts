@@ -1,25 +1,28 @@
 import {RuleSetRule} from 'webpack';
-import {Environment, Target} from '../model';
-import {resolve, select} from '../util';
-import * as paths from '../paths';
+import {extend, select} from '../util';
+import {Options, Target} from '../model';
+import path from 'path';
+import _ from 'lodash';
 
-export default async function (target: Target, env: Environment): Promise<RuleSetRule[]> {
+export default async function (target: Target, options: Options): Promise<RuleSetRule[]> {
   let selector = select(target);
   let include = selector({
-    main: paths.SRC_MAIN,
-    renderer: paths.SRC_RENDERER
+    main: path.resolve(options.src.main),
+    renderer: path.resolve(options.src.renderer)
   });
   let exclude = /node_modules/;
-  let presets = [
-    ['@babel/env', {
-      useBuiltIns: 'usage',
-      corejs: 3
-    }],
-    target === 'renderer' && ['@babel/preset-react', {
-      development: env === 'dev'
-    }]
-  ];
   return [
+    {
+      include,
+      exclude,
+      enforce: 'pre',
+      test: selector({
+        main: /\.js$/,
+        renderer: /\.jsx?$/
+      }),
+      loader: 'eslint-loader',
+      options: await extend(options.config.eslint, target, {}, options)
+    },
     {
       include,
       exclude,
@@ -27,13 +30,39 @@ export default async function (target: Target, env: Environment): Promise<RuleSe
         main: /\.js$/,
         renderer: /\.jsx?$/
       }),
-      loader: resolve('babel-loader'),
-      options: {
-        presets: presets.filter(Boolean),
-        plugins: [
-          ['@babel/plugin-transform-runtime']
-        ]
-      }
+      loader: 'babel-loader',
+      options: await (async () => {
+        let babel = selector({
+          main: options.config.babel,
+          renderer: options.config.babel
+        });
+        return await extend(babel, target, {
+          sourceMaps: true,
+          presets: _.filter([
+            ['@babel/env', {
+              useBuiltIns: 'usage',
+              corejs: 3
+            }],
+            target === 'renderer' && ['@babel/preset-react', {
+              development: options.env === 'dev'
+            }]
+          ]),
+          plugins: [
+            ['@babel/plugin-transform-runtime']
+          ]
+        }, options);
+      })()
+    },
+    {
+      include,
+      exclude,
+      enforce: 'pre',
+      test: selector({
+        main: /\.ts$/,
+        renderer: /\.tsx?$/
+      }),
+      loader: 'eslint-loader',
+      options: await extend(options.config.eslint, target, {}, options)
     },
     {
       include,
@@ -42,13 +71,7 @@ export default async function (target: Target, env: Environment): Promise<RuleSe
         main: /\.ts$/,
         renderer: /\.tsx?$/
       }),
-      loader: resolve('ts-loader'),
-      options: {
-        configFile: selector({
-          main: paths.SRC_MAIN_TSCONFIG,
-          renderer: paths.SRC_RENDERER_TSCONFIG
-        })
-      }
+      loader: 'ts-loader'
     }
   ];
 }

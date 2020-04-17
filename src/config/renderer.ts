@@ -3,32 +3,33 @@ import webpackMerge from 'webpack-merge';
 import HtmlWebpackPlugin from 'html-webpack-plugin';
 import MiniCssExtractPlugin from 'mini-css-extract-plugin';
 import OptimizeCssAssetsPlugin from 'optimize-css-assets-webpack-plugin';
-import {DIST_RENDERER, SRC_RENDERER} from '../paths';
-import {Environment, Options} from '../model';
-import {resolve, select} from '../util';
+import {Options} from '../model';
+import {select} from '../util';
 import common from './common';
 import script from './script';
 import style from './style';
+import path from 'path';
+import _ from 'lodash';
 
-export default async function (env: Environment, options: Options): Promise<Configuration> {
-  let cfg = await common(env, options);
+export default async function (options: Options): Promise<Configuration> {
+  let cfg = await common(options);
   return webpackMerge(cfg, {
-    context: SRC_RENDERER,
+    context: path.resolve(options.src.renderer),
     output: {
-      path: DIST_RENDERER
+      path: path.resolve(options.dist.renderer)
     },
     module: {
-      rules: [
-        ...await script('renderer', env),
-        ...await style(env),
+      rules: _.flatten([
+        await script('renderer', options),
+        await style(options),
         {
           test: /\.(png|jpe?g)$/,
-          loader: resolve('file-loader'),
+          loader: 'file-loader',
           options: {
             outputPath: 'assets'
           }
         }
-      ]
+      ])
     },
     resolve: {
       extensions: ['.jsx', '.tsx']
@@ -48,7 +49,7 @@ export default async function (env: Environment, options: Options): Promise<Conf
     plugins: [
       new HtmlWebpackPlugin({
         template: 'index.html',
-        minify: select(env)<any>({
+        minify: select(options.env)<any>({
           dev: false,
           prod: {
             collapseWhitespace: true

@@ -1,3 +1,28 @@
 {
-  "extends": "./config/tsconfig.base.json"
+  "compilerOptions": {
+    "lib": [
+      "ESNext"
+    ],
+    "target": "ES2019",
+    "module": "CommonJS",
+    "moduleResolution": "Node",
+    "forceConsistentCasingInFileNames": true,
+    "allowSyntheticDefaultImports": true,
+    "experimentalDecorators": true,
+    "emitDecoratorMetadata": true,
+    "resolveJsonModule": true,
+    "strictNullChecks": false,
+    "esModuleInterop": true,
+    "isolatedModules": true,
+    "noImplicitAny": false,
+    "importHelpers": true,
+    "skipLibCheck": true,
+    "declaration": true,
+    "sourceMap": true,
+    "pretty": true,
+    "strict": true
+  },
+  "include": [
+    "src"
+  ]
 }
