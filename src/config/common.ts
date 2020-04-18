@@ -11,7 +11,7 @@ export default async function (options: Options): Promise<Configuration> {
     entry: './',
     mode: selector({
       dev: 'development',
-      prod: 'none'
+      prod: 'production'
     }),
     output: {
       filename: 'index.js'

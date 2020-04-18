@@ -1,77 +1,67 @@
 import {RuleSetRule} from 'webpack';
 import {extend, select} from '../util';
 import {Options, Target} from '../model';
+import async from 'async';
 import path from 'path';
 import _ from 'lodash';
 
 export default async function (target: Target, options: Options): Promise<RuleSetRule[]> {
-  let selector = select(target);
-  let include = selector({
-    main: path.resolve(options.src.main),
-    renderer: path.resolve(options.src.renderer)
+  let rules = await async.map<Type, RuleSetRule[]>(['js', 'ts'], async type => {
+    let typeSelector = select(type);
+    let targetSelector = select(target);
+    return _.map([
+      {
+        enforce: 'pre',
+        loader: 'eslint-loader',
+        options: await extend(options.config.eslint, target, {
+          extends: 'eslint:recommended'
+        }, options)
+      },
+      {
+        loader: typeSelector({
+          js: 'babel-loader',
+          ts: 'ts-loader'
+        }),
+        options: typeSelector<any>({
+          js: await extend(options.config.babel, target, {
+            sourceMaps: true,
+            presets: _.filter([
+              ['@babel/env', {
+                useBuiltIns: 'usage',
+                corejs: 3
+              }],
+              target === 'renderer' && ['@babel/preset-react', {
+                development: options.env === 'dev'
+              }]
+            ]),
+            plugins: [
+              ['@babel/plugin-transform-runtime']
+            ]
+          }, options),
+          ts: {
+            configFile: path.resolve(options.config.typescript)
+          }
+        })
+      }
+    ], rule => _.assign({}, rule, {
+      test: typeSelector({
+        js: targetSelector({
+          main: /\.js$/,
+          renderer: /\.jsx?$/
+        }),
+        ts: targetSelector({
+          main: /\.ts$/,
+          renderer: /\.tsx?$/
+        })
+      }),
+      include: targetSelector({
+        main: path.resolve(options.src.main),
+        renderer: path.resolve(options.src.renderer)
+      }),
+      exclude: /node_modules/
+    }));
   });
-  let exclude = /node_modules/;
-  return [
-    {
-      include,
-      exclude,
-      enforce: 'pre',
-      test: selector({
-        main: /\.js$/,
-        renderer: /\.jsx?$/
-      }),
-      loader: 'eslint-loader',
-      options: await extend(options.config.eslint, target, {}, options)
-    },
-    {
-      include,
-      exclude,
-      test: selector({
-        main: /\.js$/,
-        renderer: /\.jsx?$/
-      }),
-      loader: 'babel-loader',
-      options: await (async () => {
-        let babel = selector({
-          main: options.config.babel,
-          renderer: options.config.babel
-        });
-        return await extend(babel, target, {
-          sourceMaps: true,
-          presets: _.filter([
-            ['@babel/env', {
-              useBuiltIns: 'usage',
-              corejs: 3
-            }],
-            target === 'renderer' && ['@babel/preset-react', {
-              development: options.env === 'dev'
-            }]
-          ]),
-          plugins: [
-            ['@babel/plugin-transform-runtime']
-          ]
-        }, options);
-      })()
-    },
-    {
-      include,
-      exclude,
-      enforce: 'pre',
-      test: selector({
-        main: /\.ts$/,
-        renderer: /\.tsx?$/
-      }),
-      loader: 'eslint-loader',
-      options: await extend(options.config.eslint, target, {}, options)
-    },
-    {
-      include,
-      exclude,
-      test: selector({
-        main: /\.ts$/,
-        renderer: /\.tsx?$/
-      }),
-      loader: 'ts-loader'
-    }
-  ];
+  return _.flatten(rules);
 }
+
+type Type = 'js' | 'ts';

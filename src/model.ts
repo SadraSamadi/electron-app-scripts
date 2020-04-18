@@ -14,7 +14,7 @@ export interface Configurator<T = any> {
 
 export interface Override<T = any> {
 
-  (config?: T, env?: Environment): T | Promise<T>
+  (config?: T, env?: Environment): T | Promise<T>;
 
 }
 
@@ -51,6 +51,8 @@ export interface Config {
   eslint?: string;
 
   babel?: string;
+
+  typescript?: string;
 
   tailwind?: string;
 

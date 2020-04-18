@@ -22,8 +22,5 @@
     "allowJs": true,
     "pretty": true,
     "strict": true
-  },
-  "files": [
-    "./type.d.ts"
-  ]
+  }
 }

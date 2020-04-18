@@ -12,7 +12,7 @@ let parser = yargs.scriptName('electron-app-scripts')
   .command({
     command: 'dev',
     describe: 'Start application for development',
-    builder: args => args.default('environment', 'dev')
+    builder: args => args.default('env', 'dev')
       .options({
         host: {
           type: 'string',
@@ -31,7 +31,7 @@ let parser = yargs.scriptName('electron-app-scripts')
   .command({
     command: 'prod',
     describe: 'Build application for production',
-    builder: args => args.default('environment', 'prod'),
+    builder: args => args.default('env', 'prod'),
     handler: prod
   })
   .command({
@@ -41,8 +41,7 @@ let parser = yargs.scriptName('electron-app-scripts')
   })
   .demandCommand()
   .options({
-    environment: {
-      alias: 'env',
+    env: {
       type: 'string',
       choices: ['dev', 'prod'],
       desc: 'Scripts environment mode'
@@ -79,6 +78,10 @@ let parser = yargs.scriptName('electron-app-scripts')
       },
       'config.babel': {
         desc: 'Path to babel config file for renderer'
+      },
+      'config.typescript': {
+        desc: 'Path to typescript config file',
+        default: 'tsconfig.json'
       },
       'config.tailwind': {
         desc: 'Path to tailwind config file for renderer'
