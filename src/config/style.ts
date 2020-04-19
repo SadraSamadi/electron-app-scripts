@@ -32,7 +32,7 @@ export default async function (args: Args): Promise<RuleSetRule[]> {
                 try {
                   let plugin = await import(id);
                   return plugin.default(opts);
-                } catch (e) {
+                } catch (err) {
                   return null;
                 }
               });

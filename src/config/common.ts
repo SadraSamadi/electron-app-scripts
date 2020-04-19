@@ -31,7 +31,7 @@ export default async function (args: Args): Promise<Configuration> {
       new ProgressPlugin()
     ],
     devtool: selector({
-      dev: 'eval',
+      dev: 'cheap-module-source-map',
       prod: 'source-map'
     }),
     externals: await (async () => {
@@ -52,7 +52,7 @@ export default async function (args: Args): Promise<Configuration> {
           else
             callback(undefined, undefined);
         };
-      } catch (e) {
+      } catch (err) {
         return null;
       }
     })(),

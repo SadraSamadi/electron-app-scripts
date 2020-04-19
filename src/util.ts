@@ -9,7 +9,7 @@ export async function extend<T>(file: string, target: Target, config: T, args: A
       renderer: configurator.renderer
     });
     return await override(config, args.env);
-  } catch (e) {
+  } catch (err) {
     return config;
   }
 }

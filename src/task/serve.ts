@@ -9,7 +9,6 @@ import config from '../config';
 import logger from '../logger';
 import {print} from '../util';
 import {Args} from '../model';
-import async from 'async';
 
 let server: WebpackDevServer = null;
 let watching: Compiler.Watching = null;
@@ -62,19 +61,27 @@ async function stop(): Promise<void> {
   if (!child)
     return;
   child.off('close', quit);
-  let kill = async.reflect(() => treeKill(child.pid));
-  await promisify(kill)();
+  try {
+    let kill = promisify(treeKill);
+    await kill(child.pid);
+  } catch (err) {
+    console.warn(err);
+  }
   child = null;
 }
 
 async function quit(): Promise<void> {
   if (unsubscribe)
     unsubscribe();
-  await async.series([
-    async.asyncify(stop),
-    cb => watching.close(cb),
-    cb => server.close(cb)
-  ]);
+  await stop();
+  if (watching) {
+    let close = watching.close.bind(watching);
+    await promisify(close)();
+  }
+  if (watching) {
+    let close = server.close.bind(server);
+    await promisify(close)();
+  }
   logger.info('quit');
   process.exit();
 }
