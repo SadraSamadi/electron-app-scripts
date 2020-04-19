@@ -1,6 +1,7 @@
 #!/usr/bin/env node
 
 import 'dotenv/config';
+import 'reflect-metadata';
 import yargs from 'yargs';
 import {Args} from './model';
 import api from './api';

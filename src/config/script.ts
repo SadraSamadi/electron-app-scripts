@@ -28,6 +28,9 @@ export default async function (target: Target, args: Args): Promise<RuleSetRule[
         ]),
         plugins: [
           ['@babel/plugin-transform-runtime'],
+          ['@babel/plugin-proposal-decorators', {
+            legacy: true
+          }],
           ['@babel/plugin-proposal-class-properties', {
             loose: true
           }]
