@@ -1,6 +1,6 @@
 {
   "name": "electron-app-scripts",
-  "version": "1.0.0-beta.7",
+  "version": "1.0.0-beta.8",
   "description": "Configuration and scripts for Electron App.",
   "author": "Sadra Samadi <sadra.smd@gmail.com> (https://sadrasamadi.github.io/)",
   "repository": "https://github.com/SadraSamadi/electron-app-scripts",
