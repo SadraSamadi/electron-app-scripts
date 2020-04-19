@@ -5,9 +5,9 @@
       "DOM.Iterable",
       "ESNext"
     ],
-    "jsx": "react",
-    "target": "ES2019",
-    "module": "CommonJS",
+    "jsx": "preserve",
+    "target": "ESNext",
+    "module": "ESNext",
     "moduleResolution": "Node",
     "forceConsistentCasingInFileNames": true,
     "allowSyntheticDefaultImports": true,
@@ -21,6 +21,9 @@
     "sourceMap": true,
     "allowJs": true,
     "pretty": true,
-    "strict": true
+    "strict": true,
+    "types": [
+      "./type.d.ts"
+    ]
   }
 }

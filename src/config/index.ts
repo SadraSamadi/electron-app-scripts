@@ -1,13 +1,13 @@
 import {Configuration} from 'webpack';
-import {Options, Target} from '../model';
+import {Args, Target} from '../model';
 import {extend, select} from '../util';
 import renderer from './renderer';
 import main from './main';
 
-export default async function (target: Target, options: Options): Promise<Configuration> {
+export default async function (target: Target, args: Args): Promise<Configuration> {
   let config = select(target)({
-    main: await main(options),
-    renderer: await renderer(options)
+    main: await main(args),
+    renderer: await renderer(args)
   });
-  return await extend(options.config.webpack, target, config, options);
+  return await extend(args.config.webpack, target, config, args);
 }

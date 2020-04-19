@@ -2,6 +2,8 @@ export type Target = 'main' | 'renderer';
 
 export type Environment = 'dev' | 'prod';
 
+export type Command = 'clean' | 'dev' | 'prod';
+
 export interface Configurator<T = any> {
 
   default?: Override<T>;
@@ -18,7 +20,7 @@ export interface Override<T = any> {
 
 }
 
-export interface Options {
+export interface Args {
 
   env?: Environment;
 
@@ -29,6 +31,8 @@ export interface Options {
   dist?: Directory;
 
   out?: string;
+
+  externals?: string;
 
   config?: Config;
 

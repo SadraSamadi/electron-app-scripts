@@ -3,25 +3,24 @@ import webpackMerge from 'webpack-merge';
 import HtmlWebpackPlugin from 'html-webpack-plugin';
 import MiniCssExtractPlugin from 'mini-css-extract-plugin';
 import OptimizeCssAssetsPlugin from 'optimize-css-assets-webpack-plugin';
-import {Options} from '../model';
 import {select} from '../util';
 import common from './common';
 import script from './script';
+import {Args} from '../model';
 import style from './style';
-import path from 'path';
 import _ from 'lodash';
 
-export default async function (options: Options): Promise<Configuration> {
-  let cfg = await common(options);
+export default async function (args: Args): Promise<Configuration> {
+  let cfg = await common(args);
   return webpackMerge(cfg, {
-    context: path.resolve(options.src.renderer),
+    context: args.src.renderer,
     output: {
-      path: path.resolve(options.dist.renderer)
+      path: args.dist.renderer
     },
     module: {
       rules: _.flatten([
-        await script('renderer', options),
-        await style(options),
+        await script('renderer', args),
+        await style(args),
         {
           test: /\.(png|jpe?g)$/,
           loader: 'file-loader',
@@ -49,7 +48,7 @@ export default async function (options: Options): Promise<Configuration> {
     plugins: [
       new HtmlWebpackPlugin({
         template: 'index.html',
-        minify: select(options.env)<any>({
+        minify: select(args.env)<any>({
           dev: false,
           prod: {
             collapseWhitespace: true

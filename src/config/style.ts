@@ -1,16 +1,16 @@
 import {RuleSetRule} from 'webpack';
 import MiniCssExtractPlugin from 'mini-css-extract-plugin';
 import {extend, select} from '../util';
-import {Options} from '../model';
+import {Args} from '../model';
 import async from 'async';
 import _ from 'lodash';
 
-export default async function (options: Options): Promise<RuleSetRule[]> {
+export default async function (args: Args): Promise<RuleSetRule[]> {
   return [
     {
       test: /\.css$/,
       use: [
-        select(options.env)({
+        select(args.env)({
           dev: 'style-loader',
           prod: MiniCssExtractPlugin.loader
         }),
@@ -23,10 +23,10 @@ export default async function (options: Options): Promise<RuleSetRule[]> {
         },
         {
           loader: 'postcss-loader',
-          options: await extend(options.config.postcss, 'renderer', {
+          options: await extend(args.config.postcss, 'renderer', {
             plugins: await (async () => {
               let plugins = await async.map<[string, any?], any[]>([
-                ['tailwindcss', await extend(options.config.tailwind, 'renderer', {}, options)],
+                ['tailwindcss', await extend(args.config.tailwind, 'renderer', {}, args)],
                 ['postcss-preset-env']
               ], async ([id, opts]) => {
                 try {
@@ -39,7 +39,7 @@ export default async function (options: Options): Promise<RuleSetRule[]> {
               return _.filter(plugins);
             })(),
             sourceMap: true
-          }, options)
+          }, args)
         }
       ]
     }

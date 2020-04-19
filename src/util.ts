@@ -1,16 +1,14 @@
 import {Stats} from 'webpack';
-import {Configurator, Options, Target} from './model';
-import path from 'path';
+import {Configurator, Args, Target} from './model';
 
-export async function extend<T>(file: string, target: Target, config: T, options: Options): Promise<T> {
+export async function extend<T>(file: string, target: Target, config: T, args: Args): Promise<T> {
   try {
-    let id = path.resolve(file);
-    let configurator: Configurator<T> = await import(id);
+    let configurator: Configurator<T> = await import(file);
     let override = configurator.default || select(target)({
       main: configurator.main,
       renderer: configurator.renderer
     });
-    return await override(config, options.env);
+    return await override(config, args.env);
   } catch (e) {
     return config;
   }

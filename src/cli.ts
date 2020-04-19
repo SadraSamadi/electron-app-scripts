@@ -1,15 +1,15 @@
 #!/usr/bin/env node
 
 import 'dotenv/config';
-import 'ts-node/register';
 import yargs from 'yargs';
-import {clean, dev, prod} from './api';
+import {Args} from './model';
+import api from './api';
 import _ from 'lodash';
 
-let parser = yargs.scriptName('electron-app-scripts')
+yargs.scriptName('electron-app-scripts')
   .usage('Usage: $0 command [options]')
   .env('EAS')
-  .command({
+  .command<Args>({
     command: 'dev',
     describe: 'Start application for development',
     builder: args => args.default('env', 'dev')
@@ -26,18 +26,18 @@ let parser = yargs.scriptName('electron-app-scripts')
           default: parseInt(process.env.PORT) || 3000
         }
       }),
-    handler: dev
+    handler: args => api('dev', args)
   })
-  .command({
+  .command<Args>({
     command: 'prod',
     describe: 'Build application for production',
     builder: args => args.default('env', 'prod'),
-    handler: prod
+    handler:  args => api('prod', args)
   })
-  .command({
+  .command<Args>({
     command: 'clean',
     describe: 'Clean up distributions',
-    handler: clean
+    handler:  args => api('clean', args)
   })
   .demandCommand()
   .options({
@@ -50,6 +50,11 @@ let parser = yargs.scriptName('electron-app-scripts')
       type: 'string',
       desc: 'Electron module',
       default: 'electron'
+    },
+    externals: {
+      type: 'string',
+      desc: 'Path to webpack external modules file',
+      default: '.externals'
     }
   })
   .options(
@@ -100,6 +105,5 @@ let parser = yargs.scriptName('electron-app-scripts')
   .alias('v', 'version')
   .alias('h', 'help')
   .version()
-  .help();
-
-parser.parse();
+  .help()
+  .parse();

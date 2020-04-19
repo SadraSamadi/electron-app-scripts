@@ -1,21 +1,20 @@
 import {Configuration} from 'webpack';
 import webpackMerge from 'webpack-merge';
-import {Options} from '../model';
 import common from './common';
 import script from './script';
-import path from 'path';
+import {Args} from '../model';
 import _ from 'lodash';
 
-export default async function (options: Options): Promise<Configuration> {
-  let cfg = await common(options);
+export default async function (args: Args): Promise<Configuration> {
+  let cfg = await common(args);
   return webpackMerge(cfg, {
-    context: path.resolve(options.src.main),
+    context: args.src.main,
     output: {
-      path: path.resolve(options.dist.main)
+      path: args.dist.main
     },
     module: {
       rules: _.flatten([
-        await script('main', options)
+        await script('main', args)
       ])
     },
     target: 'electron-main'
