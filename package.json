@@ -90,7 +90,7 @@
   },
   "peerDependencies": {
     "electron": "^8.2.3",
-    "electron-app-runtime": "^1.0.0-beta.9"
+    "electron-app-runtime": "^1.0.1"
   },
   "optionalDependencies": {
     "tailwindcss": "^1.2.0"
