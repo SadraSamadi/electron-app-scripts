@@ -11,7 +11,7 @@ export default winston.createLogger({
       info.level = _.padEnd(info.level, 7, ' ');
       return info;
     })(),
-    winston.format.colorize({all: true}),
+    winston.format.colorize(),
     winston.format.printf(info => {
       let template = _.template('[${timestamp}] ${level} : ${message}');
       return template(info);
