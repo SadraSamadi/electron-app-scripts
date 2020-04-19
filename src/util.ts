@@ -4,10 +4,12 @@ import {Configurator, Args, Target} from './model';
 export async function extend<T>(file: string, target: Target, config: T, args: Args): Promise<T> {
   try {
     let configurator: Configurator<T> = await import(file);
-    let override = configurator.default || select(target)({
-      main: configurator.main,
-      renderer: configurator.renderer
-    });
+    let override = typeof configurator.default === 'function' ?
+      configurator.default :
+      select(target)({
+        main: configurator.main,
+        renderer: configurator.renderer
+      });
     return await override(config, args.env);
   } catch (err) {
     return config;

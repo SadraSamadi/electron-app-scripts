@@ -65,7 +65,7 @@ async function stop(): Promise<void> {
     let kill = promisify(treeKill);
     await kill(child.pid);
   } catch (err) {
-    console.warn(err);
+    console.warn(err.message);
   }
   child = null;
 }
