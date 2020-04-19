@@ -5,9 +5,6 @@ import renderer from './renderer';
 import main from './main';
 
 export default async function (target: Target, args: Args): Promise<Configuration> {
-  let config = select(target)({
-    main: await main(args),
-    renderer: await renderer(args)
-  });
+  let config = await select(target)({main, renderer})(args);
   return await extend(args.config.webpack, target, config, args);
 }

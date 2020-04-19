@@ -27,8 +27,12 @@ export default async function (target: Target, args: Args): Promise<RuleSetRule[
           ['@babel/preset-typescript']
         ]),
         plugins: [
-          ['@babel/plugin-transform-runtime']
+          ['@babel/plugin-transform-runtime'],
+          ['@babel/plugin-proposal-class-properties', {
+            loose: true
+          }]
         ],
+        inputSourceMap: true,
         sourceMaps: true
       }, args)
     }

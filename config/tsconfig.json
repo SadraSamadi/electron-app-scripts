@@ -18,12 +18,8 @@
     "isolatedModules": true,
     "importHelpers": true,
     "skipLibCheck": true,
-    "sourceMap": true,
     "allowJs": true,
     "pretty": true,
-    "strict": true,
-    "types": [
-      "./type.d.ts"
-    ]
+    "strict": true
   }
 }
