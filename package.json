@@ -23,8 +23,7 @@
     "build": "gulp build",
     "type": "gulp type",
     "test": "gulp test",
-    "prepublishOnly": "gulp",
-    "release": "yarn publish --prerelease --tag beta"
+    "prepublishOnly": "gulp"
   },
   "dependencies": {
     "@babel/core": "^7.9.0",
@@ -42,8 +41,6 @@
     "cross-spawn": "^7.0.2",
     "css-loader": "^3.5.2",
     "dotenv": "^8.2.0",
-    "eslint": "^6.8.0",
-    "eslint-loader": "^4.0.0",
     "exit-hook": "^2.2.0",
     "file-loader": "^6.0.0",
     "fs-extra": "^9.0.0",

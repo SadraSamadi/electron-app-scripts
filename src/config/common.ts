@@ -30,9 +30,9 @@ export default async function (args: Args): Promise<Configuration> {
     plugins: [
       new ProgressPlugin()
     ],
-    devtool: selector({
+    devtool: selector<any>({
       dev: 'cheap-module-source-map',
-      prod: 'source-map'
+      prod: false
     }),
     externals: await (async () => {
       try {

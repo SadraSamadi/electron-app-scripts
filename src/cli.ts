@@ -61,42 +61,39 @@ yargs.scriptName('electron-app-scripts')
   .options(
     _.mapValues({
       'src.main': {
-        desc: 'Path to source folder for main',
+        desc: 'Main source folder',
         default: 'src/main'
       },
       'src.renderer': {
-        desc: 'Path to source folder for renderer',
+        desc: 'Renderer source folder',
         default: 'src/renderer'
       },
       'dist.main': {
-        desc: 'Path to distributable folder for main',
+        desc: 'Main distributable folder',
         default: 'dist/main'
       },
       'dist.renderer': {
-        desc: 'Path to distributable folder for renderer',
+        desc: 'Renderer distributable folder',
         default: 'dist/renderer'
       },
       'out': {
-        desc: 'Path to folder for outputs'
-      },
-      'config.eslint': {
-        desc: 'Path to eslint config file for renderer'
+        desc: 'Outputs folder'
       },
       'config.babel': {
-        desc: 'Path to babel config file for renderer'
+        desc: 'Babel config file'
       },
       'config.typescript': {
-        desc: 'Path to typescript config file',
+        desc: 'Typescript config file',
         default: 'tsconfig.json'
       },
       'config.tailwind': {
-        desc: 'Path to tailwind config file for renderer'
+        desc: 'Tailwind config file'
       },
       'config.postcss': {
-        desc: 'Path to postcss config file for renderer'
+        desc: 'Postcss config file'
       },
       'config.webpack': {
-        desc: 'Path to webpack config file for renderer'
+        desc: 'Webpack config file'
       }
     }, (option, key) => _.defaults({}, option, {
       type: 'string',

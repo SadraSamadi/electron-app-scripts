@@ -52,8 +52,6 @@ export interface Directory {
 
 export interface Config {
 
-  eslint?: string;
-
   babel?: string;
 
   typescript?: string;
