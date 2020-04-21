@@ -2,17 +2,15 @@ export type Target = 'main' | 'renderer';
 
 export type Environment = 'dev' | 'prod';
 
-export interface Configurator<T = any> {
+export type Configurator<T = any> = Extender<T> & {
 
-  default?: Override<T>;
+  main?: Extender<T>;
 
-  main?: Override<T>;
+  renderer?: Extender<T>;
 
-  renderer?: Override<T>;
+};
 
-}
-
-export interface Override<T = any> {
+export interface Extender<T = any> {
 
   (config?: T, env?: Environment): T | Promise<T>;
 
@@ -53,6 +51,12 @@ export interface Args {
   postcss?: string;
 
   webpack?: string;
+
+  noPack?: boolean;
+
+  pack?: string;
+
+  res?: string;
 
   host?: string;
 

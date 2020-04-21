@@ -3,7 +3,7 @@
   "version": "1.0.0-beta.13",
   "description": "Configuration and scripts for Electron App.",
   "author": "Sadra Samadi <sadra.smd@gmail.com> (https://sadrasamadi.github.io/)",
-  "repository": "https://github.com/SadraSamadi/electron-app-scripts",
+  "repository": "https://github.com/SadraSamadi/electron-app-scripts/",
   "license": "MIT",
   "keywords": [
     "electron",
@@ -42,6 +42,7 @@
     "cross-spawn": "^7.0.2",
     "css-loader": "^3.5.2",
     "dotenv": "^8.2.0",
+    "electron-builder": "^22.5.1",
     "exit-hook": "^2.2.0",
     "file-loader": "^6.0.0",
     "fs-extra": "^9.0.0",
@@ -63,7 +64,6 @@
     "yargs": "^15.3.1"
   },
   "devDependencies": {
-    "@babel/cli": "^7.8.4",
     "@types/async": "^3.2.0",
     "@types/cross-spawn": "^6.0.1",
     "@types/fs-extra": "^8.1.0",

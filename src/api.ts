@@ -22,13 +22,14 @@ export async function prod(args: Args): Promise<void> {
   logger.info('production');
   await clean(args);
   await build(args);
-  await pack(args);
+  if (!args.noPack)
+    await pack(args);
 }
 
 export function resolve(args: Args): void {
-  const res = file => path.resolve(file);
+  const res = file => file && path.resolve(file);
   const map = obj => _.mapValues(obj, res);
-  _.assign(args, {
+  _.assign<Args, Args>(args, {
     src: map(args.src),
     dist: map(args.dist),
     externals: res(args.externals),
@@ -36,6 +37,8 @@ export function resolve(args: Args): void {
     typescript: res(args.typescript),
     tailwind: res(args.tailwind),
     postcss: res(args.postcss),
-    webpack: res(args.webpack)
+    webpack: res(args.webpack),
+    pack: res(args.pack),
+    res: res(args.res)
   });
 }

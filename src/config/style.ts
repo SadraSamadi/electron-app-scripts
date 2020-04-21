@@ -23,10 +23,10 @@ export default async function (args: Args): Promise<RuleSetRule[]> {
         },
         {
           loader: 'postcss-loader',
-          options: await extend(args.postcss, 'renderer', {
+          options: await extend(args.postcss, {
             plugins: await (async () => {
               let plugins = await async.map<[string, any?], any[]>([
-                ['tailwindcss', await extend(args.tailwind, 'renderer', {}, args)],
+                ['tailwindcss', await extend(args.tailwind, {}, args.env, 'renderer')],
                 ['postcss-preset-env']
               ], async ([id, opts]) => {
                 try {
@@ -39,7 +39,7 @@ export default async function (args: Args): Promise<RuleSetRule[]> {
               return _.filter(plugins);
             })(),
             sourceMap: true
-          }, args)
+          }, args.env, 'renderer')
         }
       ]
     }

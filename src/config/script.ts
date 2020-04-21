@@ -17,7 +17,7 @@ export default async function (target: Target, args: Args): Promise<RuleSetRule[
       }),
       exclude: /node_modules/,
       loader: 'babel-loader',
-      options: await extend(args.babel, target, {
+      options: await extend(args.babel, {
         presets: _.filter([
           ['@babel/env', {
             useBuiltIns: 'usage',
@@ -40,7 +40,7 @@ export default async function (target: Target, args: Args): Promise<RuleSetRule[
         ],
         inputSourceMap: true,
         sourceMaps: true
-      }, args)
+      }, args.env, target)
     }
   ];
 }

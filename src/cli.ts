@@ -19,6 +19,11 @@ yargs.scriptName(name)
     describe: 'Start application for development',
     builder: args => args.default('env', 'dev')
       .options({
+        electron: {
+          type: 'string',
+          desc: 'Electron module',
+          default: 'electron'
+        },
         host: {
           type: 'string',
           desc: 'Development server hostname',
@@ -36,12 +41,34 @@ yargs.scriptName(name)
   .command<Args>({
     command: 'prod',
     describe: 'Build application for production',
-    builder: args => args.default('env', 'prod'),
+    builder: args => args.default('env', 'prod')
+      .options({
+        'no-pack': {
+          type: 'boolean',
+          desc: 'Do not pack',
+          default: false
+        },
+        pack: {
+          type: 'string',
+          desc: 'Packing config file',
+          default: 'pack.eas.js'
+        },
+        res: {
+          type: 'string',
+          desc: 'Resources for packing',
+          default: 'res'
+        },
+        'dist.out': {
+          type: 'string',
+          desc: 'Outputs folder',
+          default: 'dist/out'
+        }
+      }),
     handler: api.prod
   })
   .command<Args>({
     command: 'clean',
-    describe: 'Clean up distributions',
+    describe: 'Clean up distributable files',
     handler: api.clean
   })
   .middleware(api.resolve)
@@ -52,18 +79,11 @@ yargs.scriptName(name)
       choices: ['dev', 'prod'],
       desc: 'Scripts environment mode'
     },
-    electron: {
-      type: 'string',
-      desc: 'Electron module',
-      default: 'electron'
-    },
     externals: {
       type: 'string',
       desc: 'Path to webpack external modules file',
       default: '.externals'
-    }
-  })
-  .options({
+    },
     'src.main': {
       type: 'string',
       desc: 'Main source folder',
@@ -84,32 +104,27 @@ yargs.scriptName(name)
       desc: 'Renderer distributable folder',
       default: 'dist/renderer'
     },
-    'dist.out': {
-      type: 'string',
-      desc: 'Outputs folder',
-      default: 'dist/out'
-    },
-    'babel': {
+    babel: {
       type: 'string',
       desc: 'Babel config file',
       default: 'babel.eas.js'
     },
-    'typescript': {
+    typescript: {
       type: 'string',
       desc: 'Typescript config file',
       default: 'tsconfig.json'
     },
-    'tailwind': {
+    tailwind: {
       type: 'string',
       desc: 'Tailwind config file',
       default: 'tailwind.eas.js'
     },
-    'postcss': {
+    postcss: {
       type: 'string',
       desc: 'Postcss config file',
       default: 'postcss.eas.js'
     },
-    'webpack': {
+    webpack: {
       type: 'string',
       desc: 'Webpack config file',
       default: 'webpack.eas.js'

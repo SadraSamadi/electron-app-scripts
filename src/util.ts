@@ -1,14 +1,15 @@
 import {Stats} from 'webpack';
-import {Args, Configurator, Target} from './model';
+import {Configurator, Environment, Target} from './model';
 
-export async function extend<T>(file: string, target: Target, config: T, args: Args): Promise<T> {
+export async function extend<T>(file: string, config: T, env: Environment, target?: Target): Promise<T> {
   try {
     let {default: configurator}: { default: Configurator<T> } = await import(file);
-    let override = typeof configurator === 'function' ? configurator : select(target)({
+    let extender = typeof configurator === 'function' ? configurator : select(target)({
       main: configurator.main,
-      renderer: configurator.renderer
+      renderer: configurator.renderer,
+      default: configurator
     });
-    return await override(config, args.env);
+    return await extender(config, env);
   } catch (err) {
     return config;
   }
