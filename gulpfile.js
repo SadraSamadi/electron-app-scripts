@@ -8,7 +8,6 @@ const del = require('del');
 const paths = {
   scripts: 'src/**/*.ts',
   dist: 'dist',
-  type: 'type',
   test: 'test',
   tsconfig: 'tsconfig.json'
 };
@@ -20,7 +19,7 @@ exports.test = test;
 exports.default = series(clean, build, type);
 
 function clean() {
-  return del([paths.dist, paths.type]);
+  return del(paths.dist);
 }
 
 function build() {
@@ -38,7 +37,7 @@ function type() {
   return src(paths.scripts)
     .pipe(project())
     .dts
-    .pipe(dest(paths.type));
+    .pipe(dest(paths.dist));
 }
 
 function test() {

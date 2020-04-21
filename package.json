@@ -21,7 +21,6 @@
     "type"
   ],
   "main": "dist",
-  "types": "type",
   "bin": "dist/cli.js",
   "scripts": {
     "clean": "gulp clean",
