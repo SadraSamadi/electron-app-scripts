@@ -2,8 +2,6 @@ export type Target = 'main' | 'renderer';
 
 export type Environment = 'dev' | 'prod';
 
-export type Command = 'clean' | 'dev' | 'prod';
-
 export interface Configurator<T = any> {
 
   default?: Override<T>;
@@ -26,31 +24,25 @@ export interface Args {
 
   electron?: string;
 
-  src?: Directory;
+  src?: {
 
-  dist?: Directory;
+    main?: string;
 
-  out?: string;
+    renderer?: string;
+
+  };
+
+  dist?: {
+
+    main?: string;
+
+    renderer?: string;
+
+    out?: string;
+
+  };
 
   externals?: string;
-
-  config?: Config;
-
-  host?: string;
-
-  port?: number;
-
-}
-
-export interface Directory {
-
-  main?: string;
-
-  renderer?: string;
-
-}
-
-export interface Config {
 
   babel?: string;
 
@@ -61,5 +53,9 @@ export interface Config {
   postcss?: string;
 
   webpack?: string;
+
+  host?: string;
+
+  port?: number;
 
 }

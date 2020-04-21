@@ -1,26 +1,14 @@
 {
   "compilerOptions": {
-    "lib": [
-      "ESNext"
-    ],
     "target": "ESNext",
     "module": "ESNext",
     "moduleResolution": "Node",
-    "forceConsistentCasingInFileNames": true,
-    "allowSyntheticDefaultImports": true,
     "experimentalDecorators": true,
-    "emitDecoratorMetadata": true,
     "emitDeclarationOnly": true,
     "resolveJsonModule": true,
-    "strictNullChecks": false,
     "esModuleInterop": true,
-    "isolatedModules": true,
-    "noImplicitAny": false,
-    "skipLibCheck": true,
     "declaration": true,
-    "allowJs": true,
-    "pretty": true,
-    "strict": true
+    "allowJs": true
   },
   "include": [
     "src"

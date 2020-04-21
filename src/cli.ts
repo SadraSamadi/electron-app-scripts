@@ -1,15 +1,19 @@
 #!/usr/bin/env node
 
 import 'dotenv/config';
-import 'reflect-metadata';
 import yargs from 'yargs';
+import * as api from './api';
 import {Args} from './model';
-import api from './api';
-import _ from 'lodash';
 
-yargs.scriptName('electron-app-scripts')
+const name = 'electron-app-scripts';
+
+yargs.scriptName(name)
   .usage('Usage: $0 command [options]')
   .env('EAS')
+  .config()
+  .alias('c', 'config')
+  .default('config', 'easrc.json')
+  .pkgConf(name)
   .command<Args>({
     command: 'dev',
     describe: 'Start application for development',
@@ -27,19 +31,20 @@ yargs.scriptName('electron-app-scripts')
           default: parseInt(process.env.PORT) || 3000
         }
       }),
-    handler: args => api('dev', args)
+    handler: api.dev
   })
   .command<Args>({
     command: 'prod',
     describe: 'Build application for production',
     builder: args => args.default('env', 'prod'),
-    handler:  args => api('prod', args)
+    handler: api.prod
   })
   .command<Args>({
     command: 'clean',
     describe: 'Clean up distributions',
-    handler:  args => api('clean', args)
+    handler: api.clean
   })
+  .middleware(api.resolve)
   .demandCommand()
   .options({
     env: {
@@ -58,48 +63,58 @@ yargs.scriptName('electron-app-scripts')
       default: '.externals'
     }
   })
-  .options(
-    _.mapValues({
-      'src.main': {
-        desc: 'Main source folder',
-        default: 'src/main'
-      },
-      'src.renderer': {
-        desc: 'Renderer source folder',
-        default: 'src/renderer'
-      },
-      'dist.main': {
-        desc: 'Main distributable folder',
-        default: 'dist/main'
-      },
-      'dist.renderer': {
-        desc: 'Renderer distributable folder',
-        default: 'dist/renderer'
-      },
-      'out': {
-        desc: 'Outputs folder'
-      },
-      'config.babel': {
-        desc: 'Babel config file'
-      },
-      'config.typescript': {
-        desc: 'Typescript config file',
-        default: 'tsconfig.json'
-      },
-      'config.tailwind': {
-        desc: 'Tailwind config file'
-      },
-      'config.postcss': {
-        desc: 'Postcss config file'
-      },
-      'config.webpack': {
-        desc: 'Webpack config file'
-      }
-    }, (option, key) => _.defaults({}, option, {
+  .options({
+    'src.main': {
       type: 'string',
-      default: key
-    }))
-  )
+      desc: 'Main source folder',
+      default: 'src/main'
+    },
+    'src.renderer': {
+      type: 'string',
+      desc: 'Renderer source folder',
+      default: 'src/renderer'
+    },
+    'dist.main': {
+      type: 'string',
+      desc: 'Main distributable folder',
+      default: 'dist/main'
+    },
+    'dist.renderer': {
+      type: 'string',
+      desc: 'Renderer distributable folder',
+      default: 'dist/renderer'
+    },
+    'dist.out': {
+      type: 'string',
+      desc: 'Outputs folder',
+      default: 'dist/out'
+    },
+    'babel': {
+      type: 'string',
+      desc: 'Babel config file',
+      default: 'babel.eas.js'
+    },
+    'typescript': {
+      type: 'string',
+      desc: 'Typescript config file',
+      default: 'tsconfig.json'
+    },
+    'tailwind': {
+      type: 'string',
+      desc: 'Tailwind config file',
+      default: 'tailwind.eas.js'
+    },
+    'postcss': {
+      type: 'string',
+      desc: 'Postcss config file',
+      default: 'postcss.eas.js'
+    },
+    'webpack': {
+      type: 'string',
+      desc: 'Webpack config file',
+      default: 'webpack.eas.js'
+    }
+  })
   .alias('v', 'version')
   .alias('h', 'help')
   .version()

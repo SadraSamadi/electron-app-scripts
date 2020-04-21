@@ -17,7 +17,7 @@ export default async function (target: Target, args: Args): Promise<RuleSetRule[
       }),
       exclude: /node_modules/,
       loader: 'babel-loader',
-      options: await extend(args.config.babel, target, {
+      options: await extend(args.babel, target, {
         presets: _.filter([
           ['@babel/env', {
             useBuiltIns: 'usage',
@@ -29,6 +29,7 @@ export default async function (target: Target, args: Args): Promise<RuleSetRule[
           ['@babel/preset-typescript']
         ]),
         plugins: [
+          ['babel-plugin-transform-typescript-metadata'],
           ['@babel/plugin-proposal-decorators', {
             legacy: true
           }],

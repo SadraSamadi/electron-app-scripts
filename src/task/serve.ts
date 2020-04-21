@@ -26,7 +26,7 @@ async function renderer(args: Args): Promise<WebpackDevServer> {
   let compiler = webpack(cfg);
   let wds = new WebpackDevServer(compiler);
   let listen = wds.listen.bind(wds);
-  await promisify<number, string>(listen)(args.port, args.host);
+  await promisify(listen)(args.port, args.host);
   return wds;
 }
 

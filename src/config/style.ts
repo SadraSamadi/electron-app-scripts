@@ -23,10 +23,10 @@ export default async function (args: Args): Promise<RuleSetRule[]> {
         },
         {
           loader: 'postcss-loader',
-          options: await extend(args.config.postcss, 'renderer', {
+          options: await extend(args.postcss, 'renderer', {
             plugins: await (async () => {
               let plugins = await async.map<[string, any?], any[]>([
-                ['tailwindcss', await extend(args.config.tailwind, 'renderer', {}, args)],
+                ['tailwindcss', await extend(args.tailwind, 'renderer', {}, args)],
                 ['postcss-preset-env']
               ], async ([id, opts]) => {
                 try {
