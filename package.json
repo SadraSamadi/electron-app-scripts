@@ -89,10 +89,10 @@
     "jest": "^25.3.0"
   },
   "peerDependencies": {
-    "electron": "^8.2.3",
-    "electron-app-runtime": "^1.0.1"
+    "electron": "*",
+    "electron-app-runtime": "*"
   },
   "optionalDependencies": {
-    "tailwindcss": "^1.2.0"
+    "tailwindcss": "*"
   }
 }
