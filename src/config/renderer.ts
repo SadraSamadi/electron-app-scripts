@@ -4,6 +4,7 @@ import HtmlWebpackPlugin from 'html-webpack-plugin';
 import MiniCssExtractPlugin from 'mini-css-extract-plugin';
 import OptimizeCssAssetsPlugin from 'optimize-css-assets-webpack-plugin';
 import {select} from '../util';
+import logger from '../logger';
 import common from './common';
 import script from './script';
 import {Args} from '../model';
@@ -11,6 +12,7 @@ import style from './style';
 import _ from 'lodash';
 
 export default async function (args: Args): Promise<Configuration> {
+  logger.info('creating main config...');
   let cfg = await common(args);
   return webpackMerge(cfg, {
     context: args.src.renderer,

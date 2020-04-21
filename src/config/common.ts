@@ -1,11 +1,13 @@
 import {Configuration, ProgressPlugin} from 'webpack';
 import TerserPlugin from 'terser-webpack-plugin';
 import {select} from '../util';
+import logger from '../logger';
 import {Args} from '../model';
 import fse from 'fs-extra';
 import _ from 'lodash';
 
 export default async function (args: Args): Promise<Configuration> {
+  logger.info('creating common config...');
   let selector = select(args.env);
   return {
     entry: './',
@@ -36,6 +38,7 @@ export default async function (args: Args): Promise<Configuration> {
     }),
     externals: await (async () => {
       try {
+        logger.info('reading externals file: %s', args.externals);
         let list = await fse.readFile(args.externals, 'utf8');
         let externals = list.split(/\r?\n/);
         if (!externals)
@@ -45,6 +48,7 @@ export default async function (args: Args): Promise<Configuration> {
           .filter()
           .map(external => new RegExp(`^${external}(\/.+)?$`))
           .value();
+        logger.info('applying externals');
         return (context, request, callback) => {
           let some = regexps.some(regexp => regexp.test(request));
           if (some)

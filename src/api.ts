@@ -21,12 +21,20 @@ export async function dev(args: Args): Promise<void> {
 export async function prod(args: Args): Promise<void> {
   logger.info('production');
   await clean(args);
-  await build(args);
+  if (!args.noBuild)
+    await build(args);
   if (!args.noPack)
     await pack(args);
 }
 
+export function prepare(args: Args) {
+  logger.silent = !args.verbose;
+  logger.info('preparing...');
+  resolve(args);
+}
+
 export function resolve(args: Args): void {
+  logger.info('resolving paths...');
   const res = file => file && path.resolve(file);
   const map = obj => _.mapValues(obj, res);
   _.assign<Args, Args>(args, {

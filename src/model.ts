@@ -52,6 +52,8 @@ export interface Args {
 
   webpack?: string;
 
+  noBuild?: boolean;
+
   noPack?: boolean;
 
   pack?: string;
@@ -61,5 +63,7 @@ export interface Args {
   host?: string;
 
   port?: number;
+
+  verbose?: boolean;
 
 }

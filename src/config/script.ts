@@ -1,9 +1,11 @@
 import {RuleSetRule} from 'webpack';
 import {extend, select} from '../util';
 import {Args, Target} from '../model';
+import logger from '../logger';
 import _ from 'lodash';
 
 export default async function (target: Target, args: Args): Promise<RuleSetRule[]> {
+  logger.info('creating script config...');
   let selector = select(target);
   return [
     {

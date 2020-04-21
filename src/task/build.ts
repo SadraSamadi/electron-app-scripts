@@ -3,8 +3,10 @@ import {promisify} from 'util';
 import config from '../config';
 import {print} from '../util';
 import {Args} from '../model';
+import logger from '../logger';
 
 export default async function (args: Args): Promise<void> {
+  logger.info('webpack building...');
   let renderer = await config('renderer', args);
   let main = await config('main', args);
   let compiler = webpack([renderer, main]);

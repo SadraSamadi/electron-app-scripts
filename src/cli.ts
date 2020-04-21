@@ -43,6 +43,11 @@ yargs.scriptName(name)
     describe: 'Build application for production',
     builder: args => args.default('env', 'prod')
       .options({
+        'no-build': {
+          type: 'boolean',
+          desc: 'Do not build',
+          default: false
+        },
         'no-pack': {
           type: 'boolean',
           desc: 'Do not pack',
@@ -66,7 +71,7 @@ yargs.scriptName(name)
     describe: 'Clean up distributable files',
     handler: api.clean
   })
-  .middleware(api.resolve)
+  .middleware(api.prepare)
   .demandCommand()
   .options({
     env: {
@@ -128,6 +133,11 @@ yargs.scriptName(name)
       type: 'string',
       desc: 'Webpack config file',
       default: 'webpack.eas.js'
+    },
+    verbose: {
+      type: 'boolean',
+      desc: 'Enable/Disable logs',
+      default: false
     }
   })
   .alias('v', 'version')

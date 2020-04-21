@@ -1,9 +1,12 @@
 import {Stats} from 'webpack';
 import {Configurator, Environment, Target} from './model';
+import logger from './logger';
 
 export async function extend<T>(file: string, config: T, env: Environment, target?: Target): Promise<T> {
   try {
     let {default: configurator}: { default: Configurator<T> } = await import(file);
+    logger.info('extending config [env: %s] [target: %s]', env, target);
+    logger.info('from: %s', file);
     let extender = typeof configurator === 'function' ? configurator : select(target)({
       main: configurator.main,
       renderer: configurator.renderer,

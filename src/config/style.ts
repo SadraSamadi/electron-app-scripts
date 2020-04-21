@@ -1,11 +1,13 @@
 import {RuleSetRule} from 'webpack';
 import MiniCssExtractPlugin from 'mini-css-extract-plugin';
 import {extend, select} from '../util';
+import logger from '../logger';
 import {Args} from '../model';
 import async from 'async';
 import _ from 'lodash';
 
 export default async function (args: Args): Promise<RuleSetRule[]> {
+  logger.info('creating style config...');
   return [
     {
       test: /\.css$/,
@@ -25,14 +27,17 @@ export default async function (args: Args): Promise<RuleSetRule[]> {
           loader: 'postcss-loader',
           options: await extend(args.postcss, {
             plugins: await (async () => {
+              logger.info('loading postcss plugins...');
               let plugins = await async.map<[string, any?], any[]>([
                 ['tailwindcss', await extend(args.tailwind, {}, args.env, 'renderer')],
                 ['postcss-preset-env']
               ], async ([id, opts]) => {
                 try {
+                  logger.info('adding postcss plugin: %s', id);
                   let plugin = await import(id);
                   return plugin.default(opts);
                 } catch (err) {
+                  logger.warn('postcss plugin not found: %s', id);
                   return null;
                 }
               });
