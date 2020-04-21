@@ -57,6 +57,7 @@ export default async function (args: Args): Promise<Configuration> {
             callback(undefined, undefined);
         };
       } catch (err) {
+        logger.warn('externals file not found: %s', args.externals);
         return null;
       }
     })(),

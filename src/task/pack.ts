@@ -6,7 +6,7 @@ import path from 'path';
 import _ from 'lodash';
 
 export default async function (args: Args): Promise<void> {
-  logger.info('packing...');
+  logger.info('start packing...');
   let cwd = process.cwd();
   let config = await extend<CliOptions>(args.pack, {
     config: {
@@ -21,4 +21,5 @@ export default async function (args: Args): Promise<void> {
     }
   }, args.env);
   await build(config);
+  logger.info('packing finished');
 }

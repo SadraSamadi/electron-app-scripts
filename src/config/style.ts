@@ -27,7 +27,7 @@ export default async function (args: Args): Promise<RuleSetRule[]> {
           loader: 'postcss-loader',
           options: await extend(args.postcss, {
             plugins: await (async () => {
-              logger.info('loading postcss plugins...');
+              logger.info('adding postcss plugins...');
               let plugins = await async.map<[string, any?], any[]>([
                 ['tailwindcss', await extend(args.tailwind, {}, args.env, 'renderer')],
                 ['postcss-preset-env']
