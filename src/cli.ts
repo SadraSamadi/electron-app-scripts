@@ -57,11 +57,6 @@ yargs.scriptName(name)
           type: 'string',
           desc: 'Resources for packing',
           default: 'res'
-        },
-        'dist.out': {
-          type: 'string',
-          desc: 'Outputs folder',
-          default: 'dist/out'
         }
       }),
     handler: api.prod
@@ -103,6 +98,11 @@ yargs.scriptName(name)
       type: 'string',
       desc: 'Renderer distributable folder',
       default: 'dist/renderer'
+    },
+    'dist.out': {
+      type: 'string',
+      desc: 'Outputs folder',
+      default: 'dist/out'
     },
     babel: {
       type: 'string',
