@@ -30,11 +30,3 @@ export function print(stats: Stats): void {
   let str = stats.toString({colors: true});
   console.log(str);
 }
-
-function* f() {
-  for (let i = 0; i < 10; i++)
-    console.log(yield i);
-}
-
-for (let i of f())
-  console.log(i);
