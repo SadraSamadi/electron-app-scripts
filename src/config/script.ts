@@ -1,8 +1,8 @@
-import {RuleSetRule} from 'webpack';
-import {extend, select} from '../util';
-import {Args, Target} from '../model';
-import logger from '../logger';
 import _ from 'lodash';
+import {RuleSetRule} from 'webpack';
+import logger from '../logger';
+import {Args, Target} from '../model';
+import {extend, select} from '../util';
 
 export default async function (target: Target, args: Args): Promise<RuleSetRule[]> {
   logger.info('creating script config...');

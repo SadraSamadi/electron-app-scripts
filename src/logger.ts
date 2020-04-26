@@ -1,5 +1,5 @@
-import winston from 'winston';
 import _ from 'lodash';
+import winston from 'winston';
 
 export default winston.createLogger({
   format: winston.format.combine(

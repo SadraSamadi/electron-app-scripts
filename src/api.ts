@@ -1,11 +1,11 @@
-import remove from './task/remove';
-import serve from './task/serve';
+import _ from 'lodash';
+import path from 'path';
+import logger from './logger';
+import {Args} from './model';
 import build from './task/build';
 import pack from './task/pack';
-import {Args} from './model';
-import logger from './logger';
-import path from 'path';
-import _ from 'lodash';
+import remove from './task/remove';
+import serve from './task/serve';
 
 export async function clean(args: Args): Promise<void> {
   logger.info('clean');

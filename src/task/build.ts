@@ -1,9 +1,9 @@
-import webpack from 'webpack';
 import {promisify} from 'util';
+import webpack from 'webpack';
 import config from '../config';
-import {print} from '../util';
-import {Args} from '../model';
 import logger from '../logger';
+import {Args} from '../model';
+import {print} from '../util';
 
 export default async function (args: Args): Promise<void> {
   logger.info('webpack building...');

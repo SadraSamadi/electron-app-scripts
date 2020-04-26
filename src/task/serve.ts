@@ -1,14 +1,14 @@
+import {ChildProcess} from 'child_process';
+import spawn from 'cross-spawn';
+import exitHook from 'exit-hook';
+import treeKill from 'tree-kill';
+import {promisify} from 'util';
 import webpack, {Compiler} from 'webpack';
 import WebpackDevServer from 'webpack-dev-server';
-import {ChildProcess} from 'child_process';
-import treeKill from 'tree-kill';
-import exitHook from 'exit-hook';
-import spawn from 'cross-spawn';
-import {promisify} from 'util';
 import config from '../config';
 import logger from '../logger';
-import {print} from '../util';
 import {Args} from '../model';
+import {print} from '../util';
 
 let server: WebpackDevServer = null;
 let watching: Compiler.Watching = null;

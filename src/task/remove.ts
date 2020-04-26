@@ -1,8 +1,8 @@
+import async from 'async';
+import fse from 'fs-extra';
+import _ from 'lodash';
 import logger from '../logger';
 import {Args} from '../model';
-import fse from 'fs-extra';
-import async from 'async';
-import _ from 'lodash';
 
 export default function (args: Args): Promise<void> {
   logger.info('removing distributable...');

@@ -1,10 +1,10 @@
-import {Configuration, ProgressPlugin} from 'webpack';
-import TerserPlugin from 'terser-webpack-plugin';
-import {select} from '../util';
-import logger from '../logger';
-import {Args} from '../model';
 import fse from 'fs-extra';
 import _ from 'lodash';
+import TerserPlugin from 'terser-webpack-plugin';
+import {Configuration, ProgressPlugin} from 'webpack';
+import logger from '../logger';
+import {Args} from '../model';
+import {select} from '../util';
 
 export default async function (args: Args): Promise<Configuration> {
   logger.info('creating common config...');

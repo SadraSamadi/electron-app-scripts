@@ -1,9 +1,9 @@
 import {build, CliOptions} from 'electron-builder';
-import {extend} from '../util';
+import _ from 'lodash';
+import path from 'path';
 import logger from '../logger';
 import {Args} from '../model';
-import path from 'path';
-import _ from 'lodash';
+import {extend} from '../util';
 
 export default async function (args: Args): Promise<void> {
   logger.info('start packing...');

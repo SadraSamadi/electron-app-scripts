@@ -1,6 +1,6 @@
 import {Stats} from 'webpack';
-import {Configurator, Environment, Target} from './model';
 import logger from './logger';
+import {Configurator, Environment, Target} from './model';
 
 export async function extend<T>(file: string, config: T, env: Environment, target?: Target): Promise<T> {
   try {
@@ -30,3 +30,11 @@ export function print(stats: Stats): void {
   let str = stats.toString({colors: true});
   console.log(str);
 }
+
+function* f() {
+  for (let i = 0; i < 10; i++)
+    console.log(yield i);
+}
+
+for (let i of f())
+  console.log(i);

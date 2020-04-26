@@ -1,10 +1,10 @@
-import {RuleSetRule} from 'webpack';
-import MiniCssExtractPlugin from 'mini-css-extract-plugin';
-import {extend, select} from '../util';
-import logger from '../logger';
-import {Args} from '../model';
 import async from 'async';
 import _ from 'lodash';
+import MiniCssExtractPlugin from 'mini-css-extract-plugin';
+import {RuleSetRule} from 'webpack';
+import logger from '../logger';
+import {Args} from '../model';
+import {extend, select} from '../util';
 
 export default async function (args: Args): Promise<RuleSetRule[]> {
   logger.info('creating style config...');
