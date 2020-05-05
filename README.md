@@ -14,6 +14,6 @@ Configuration and scripts for Electron App.
 * **NPM** `npm i -D electron-app-scripts`
 * **Yarn** `yarn add -D electron-app-scripts`
 
-## Other
+## Related
 
 [electron-app-runtime](https://github.com/SadraSamadi/electron-app-runtime)

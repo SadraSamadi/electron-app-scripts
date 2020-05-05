@@ -58,7 +58,7 @@
     "postcss-preset-env": "^6.7.0",
     "regenerator-runtime": "^0.13.5",
     "style-loader": "^1.2.1",
-    "terser-webpack-plugin": "^2.3.6",
+    "terser-webpack-plugin": "^3.0.0",
     "tree-kill": "^1.2.2",
     "typescript": "^3.8.3",
     "webpack": "^4.43.0",
@@ -90,13 +90,13 @@
     "gulp-babel": "^8.0.0",
     "gulp-sourcemaps": "^2.6.5",
     "gulp-typescript": "^6.0.0-alpha.1",
-    "jest": "^25.5.3"
+    "jest": "^26.0.1"
   },
   "peerDependencies": {
     "electron": "*",
     "electron-app-runtime": "*"
   },
   "optionalDependencies": {
-    "tailwindcss": "1.4.1"
+    "tailwindcss": "1.4.4"
   }
 }
