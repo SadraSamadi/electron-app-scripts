@@ -64,3 +64,5 @@ Options:
 ## Related
 
 [electron-app-runtime](https://github.com/SadraSamadi/electron-app-runtime)
+
+[electron-app-starter](https://github.com/SadraSamadi/electron-app-starter)
