@@ -14,7 +14,7 @@ yargs.scriptName(name)
   .alias('c', 'config')
   .default('config', 'easrc.json')
   .pkgConf(name)
-  .command<Args>({
+  .command({
     command: 'dev',
     describe: 'Start application for development',
     builder: args => args.default('env', 'dev')
@@ -36,9 +36,9 @@ yargs.scriptName(name)
           default: parseInt(process.env.PORT) || 3000
         }
       }),
-    handler: api.dev
+    handler: args => api.dev(args as Args)
   })
-  .command<Args>({
+  .command({
     command: 'prod',
     describe: 'Build application for production',
     builder: args => args.default('env', 'prod')
@@ -64,9 +64,9 @@ yargs.scriptName(name)
           default: 'res'
         }
       }),
-    handler: api.prod
+    handler: args => api.prod(args as Args)
   })
-  .command<Args>({
+  .command({
     command: 'clean',
     describe: 'Clean up distributable files',
     handler: api.clean
